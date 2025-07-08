@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Result Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Material Symbols for chart icon -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        /* New Modern Blue-Green Theme */
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0ea5e9 0%, #22d3ee 100%);
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .navbar {
+            background: rgba(255,255,255,0.98) !important;
+            border-radius: 0 0 24px 24px;
+            box-shadow: 0 4px 24px 0 rgba(14,165,233,0.10), 0 1.5px 6px 0 rgba(34,211,238,0.08);
+            backdrop-filter: blur(12px);
+            transition: box-shadow 0.2s;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 1px;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(90deg, #0ea5e9 60%, #22d3ee 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 1,
+                'wght' 700,
+                'GRAD' 0,
+                'opsz' 48;
+            font-size: 2rem;
+            color: #0ea5e9;
+            background: linear-gradient(90deg, #0ea5e9 60%, #22d3ee 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            color: #0f172a !important;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            margin: 0 0.2rem;
+            transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+        }
+        .navbar-nav .nav-link:hover {
+            background: linear-gradient(90deg, #0ea5e9 60%, #22d3ee 100%);
+            color: #fff !important;
+            box-shadow: 0 2px 8px rgba(14,165,233,0.10);
+        }
+        .btn-gradient {
+            background: linear-gradient(90deg, #22d3ee 60%, #0ea5e9 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+            box-shadow: 0 2px 8px rgba(34,211,238,0.10);
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+        .btn-gradient:hover {
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 4px 16px rgba(34,211,238,0.18);
+            color: #fff;
+        }
+        .hero-section {
+            margin-top: 60px;
+            margin-bottom: 40px;
+        }
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 2px 16px rgba(14,165,233,0.18);
+            letter-spacing: 1px;
+        }
+        .hero-desc {
+            color: #e0f2fe;
+            font-size: 1.15rem;
+            margin-bottom: 2rem;
+        }
+        .role-card {
+            background: rgba(255,255,255,0.18);
+            border-radius: 18px;
+            padding: 1.2rem 1rem;
+            margin-bottom: 1rem;
+            transition: box-shadow 0.2s, transform 0.2s;
+            box-shadow: 0 1px 4px rgba(14,165,233,0.08);
+            cursor: pointer;
+            border: 1.5px solid #38bdf8;
+        }
+        .role-card:hover {
+            box-shadow: 0 4px 16px rgba(14,165,233,0.18);
+            transform: translateY(-4px) scale(1.03);
+            border-color: #22d3ee;
+            background: rgba(255,255,255,0.28);
+        }
+        .role-title {
+            font-weight: 700;
+            color: #0ea5e9;
+            font-size: 1.15rem;
+        }
+        .role-desc {
+            font-size: 1rem;
+            color: #0f172a;
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #22d3ee;
+            background: linear-gradient(90deg, #22d3ee 60%, #0ea5e9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .testimonial-card {
+            background: rgba(255,255,255,0.18);
+            border-radius: 18px;
+            box-shadow: 0 2px 12px rgba(14,165,233,0.08);
+            padding: 1.5rem 1.2rem;
+            margin-bottom: 1.5rem;
+            color: #0f172a;
+        }
+        .testimonial-card .quote {
+            font-size: 1.2rem;
+            font-style: italic;
+        }
+        .testimonial-card .author {
+            font-weight: 600;
+            color: #22d3ee;
+            margin-top: 0.7rem;
+        }
+        .faq-section .accordion-button {
+            background: rgba(224,242,254,0.7);
+            color: #0ea5e9;
+            font-weight: 600;
+        }
+        .faq-section .accordion-body {
+            background: rgba(224,242,254,0.4);
+        }
+        .dashboard-preview {
+            margin-top: 40px;
+        }
+        .dashboard-img {
+            width: 100%;
+            max-width: 540px;
+            border-radius: 18px;
+            box-shadow: 0 4px 32px rgba(14,165,233,0.13);
+            border: 2px solid #fff;
+        }
+        .cta-section {
+            background: linear-gradient(90deg,100% #0ea5e9 60%, #22d3ee );
+            border-radius: 18px;
+            color: #fff;
+            padding: 2.5rem 1.5rem;
+            margin-top: 3rem;
+            box-shadow: 0 4px 24px rgba(14,165,233,0.10);
+        }
+        .cta-section .btn {
+            font-size: 1.2rem;
+            padding: 0.7rem 2.5rem;
+        }
+        @media (max-width: 991.98px) {
+            .dashboard-img {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% include 'index/navbar.html' %}
+
+    <!-- Hero Section -->
+    <section class="hero-section text-center" style="
+        background: linear-gradient(120deg, #f8fafc 60%, #a7f3d0 100%);
+        border-radius: 0 0 64px 64px;
+        box-shadow: 0 8px 32px rgba(16,185,129,0.10);
+        position: relative;
+        overflow: hidden;
+    ">
+        <!-- Decorative SVG Wave -->
+        <div style="position:absolute;left:0;bottom:0;width:100%;pointer-events:none;z-index:1;">
+            <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:80px;">
+                <path fill="#6ee7b7" fill-opacity="0.25" d="M0,80 C480,160 960,0 1440,80 L1440,120 L0,120 Z"></path>
+                <path fill="#34d399" fill-opacity="0.18" d="M0,100 C480,40 960,160 1440,100 L1440,120 L0,120 Z"></path>
+            </svg>
+        </div>
+        <div class="container py-5 position-relative" style="z-index:2;">
+            <div class="mb-4">
+                <span style="
+                    display:inline-flex;
+                    align-items:center;
+                    justify-content:center;
+                    width:80px;
+                    height:80px;
+                    border-radius:50%;
+                    background:linear-gradient(135deg,#34d399 60%,#0ea5e9 100%);
+                    box-shadow:0 4px 24px rgba(16,185,129,0.13);
+                    margin-bottom:1rem;
+                ">
+                    <span class="material-symbols-outlined" style="font-size:2.8rem;color:#fff;">insert_chart</span>
+                </span>
+            </div>
+
+
+            <h1 class="hero-title mb-3" style="color:#0f172a; font-weight:900; letter-spacing:1px; text-shadow:0 2px 16px #a7f3d0;">Student Result Management System</h1>
+            <p class="hero-desc mb-4" style="color:#047857; font-size:1.25rem;">
+                Effortlessly manage, analyze, and visualize student performance.<br>
+                Beautiful dashboards, instant analytics, and seamless access for every role.
+            </p>
+            <div class="row justify-content-center">
+                <div class="col-md-4 mb-3">
+                    <div class="role-card" style="background:rgba(16,185,129,0.08);border:2px solid #34d399;" onclick="window.location.href='admin/dashboard.html'">
+                        <div class="role-title" style="color:#047857;">Admin</div>
+                        <div class="role-desc" style="color:#334155;">Manage teachers, students, subjects, and assignments.</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="role-card" style="background:rgba(16,185,129,0.08);border:2px solid #0ea5e9;" onclick="window.location.href='teacher/dashboard.html'">
+                        <div class="role-title" style="color:#0ea5e9;">Teacher</div>
+                        <div class="role-desc" style="color:#334155;">Enter and update marks for your assigned subjects.</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="role-card" style="background:rgba(16,185,129,0.08);border:2px solid #a7f3d0;" onclick="window.location.href='student/dashboard.html'">
+                        <div class="role-title" style="color:#10b981;">Student</div>
+                        <div class="role-desc" style="color:#334155;">View your results, analytics, and performance charts.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 d-flex justify-content-center gap-3">
+                <a href="login.html" class="btn btn-gradient btn-lg px-5" style="background: linear-gradient(90deg,#34d399,#0ea5e9); color:#fff; font-weight:600; border:none;">Login</a>
+                <a href="register.html" class="btn btn-outline-success btn-lg px-5" style="font-weight:600; border-width:2px;">Register</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5" style="color:#fff;font-weight:700;">Why Choose SRMS?</h2>
+            <div class="row text-center g-4">
+                <div class="col-md-4">
+                    <div>
+                        <span class="material-symbols-outlined feature-icon mb-2">security</span>
+                        <h5 class="mt-2 mb-2" style="color:#fff;">Secure & Role-Based</h5>
+                        <p>Multi-role authentication ensures only authorized users can access their data and features.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div>
+                        <span class="material-symbols-outlined feature-icon mb-2">insights</span>
+                        <h5 class="mt-2 mb-2" style="color:#fff;">Real-Time Analytics</h5>
+                        <p>Interactive dashboards and charts for instant insights into student and class performance.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div>
+                        <span class="material-symbols-outlined feature-icon mb-2">devices</span>
+                        <h5 class="mt-2 mb-2" style="color:#fff;">Mobile Friendly</h5>
+                        <p>Responsive design works beautifully on all devices, from desktops to smartphones.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center g-4 mt-3">
+                <div class="col-md-4">
+                    <div>
+                        <span class="material-symbols-outlined feature-icon mb-2">edit_note</span>
+                        <h5 class="mt-2 mb-2" style="color:#fff;">Easy Data Entry</h5>
+                        <p>Teachers can quickly add or update marks, and admins manage users with ease.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div>
+                        <span class="material-symbols-outlined feature-icon mb-2">bar_chart</span>
+                        <h5 class="mt-2 mb-2" style="color:#fff;">Performance Tracking</h5>
+                        <p>Students and teachers can track progress, view trends, and identify strengths and weaknesses.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div>
+                        <span class="material-symbols-outlined feature-icon mb-2">support_agent</span>
+                        <h5 class="mt-2 mb-2" style="color:#fff;">Support & Help</h5>
+                        <p>Comprehensive help and support for all users, including FAQs and contact options.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Preview Section -->
+    <section class="dashboard-preview text-center">
+        <div class="container">
+            <h2 class="mb-4" style="color:#fff;font-weight:600;">Intuitive Dashboards & Analytics</h2>
+            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" alt="Dashboard Preview" class="dashboard-img mb-3" />
+            <p class="text-light mb-0" style="font-size:1.05rem;">
+                Visualize performance with interactive charts, filter by subject/class, and get real-time insights.<br>
+                <span style="color:#22d3ee;font-weight:500;">Mobile-friendly</span> & <span style="color:#0ea5e9;font-weight:500;">easy to use</span> for everyone!
+            </p>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5" style="color:#fff;font-weight:700;">What Our Users Say</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="quote">"SRMS made managing results so easy and fast. The analytics help us improve our teaching!"</div>
+                        <div class="author">- Mrs. Sharma, Teacher</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="quote">"I love checking my progress and seeing my marks in beautiful charts. Highly recommended!"</div>
+                        <div class="author">- Rahul, Student</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="quote">"Managing students and teachers is a breeze. The support team is always helpful."</div>
+                        <div class="author">- Principal Gupta, Admin</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section py-5">
+        <div class="container">
+            <h2 class="text-center mb-4" style="color:#fff;font-weight:700;">Frequently Asked Questions</h2>
+            <div class="accordion accordion-flush" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq1">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="false" aria-controls="faqCollapse1">
+                            How do I register as a new user?
+                        </button>
+                    </h2>
+                    <div id="faqCollapse1" class="accordion-collapse collapse" aria-labelledby="faq1" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Click the "Register" button on the home page and fill in your details. Choose your role (Student, Teacher, or Admin) as appropriate.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq2">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
+                            Can I access SRMS on my mobile device?
+                        </button>
+                    </h2>
+                    <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes! SRMS is fully responsive and works seamlessly on smartphones, tablets, and desktops.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq3">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
+                            How secure is my data?
+                        </button>
+                    </h2>
+                    <div id="faqCollapse3" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Your data is protected with modern security practices, including role-based access and encrypted connections.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq4">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4">
+                            Who do I contact for support?
+                        </button>
+                    </h2>
+                    <div id="faqCollapse4" class="accordion-collapse collapse" aria-labelledby="faq4" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Use the "Support" link in the navigation bar or email us at <a href="mailto:support@srms.com">support@srms.com</a>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section text-center my-5">
+        <div class="container">
+            <h2 class="mb-3">Ready to get started?</h2>
+            <p class="mb-4" style="font-size:1.15rem;">Join thousands of students, teachers, and admins using SRMS to simplify result management and boost performance.</p>
+            <a href="register.html" class="btn btn-light btn-lg me-3">Register Now</a>
+            <a href="login.html" class="btn btn-outline-light btn-lg">Login</a>
+        </div>
+    </section>
+
+    <footer class="text-center mt-5 mb-3" style="color:#e0f2fe;">
+        &copy; 2025 Student Result Management System. All rights reserved.
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

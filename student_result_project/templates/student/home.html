@@ -1,0 +1,59 @@
+{% extends 'student/base_student.html' %}
+
+{% block content %}
+<div class="py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold">Welcome, {{ request.session.student_username }}!</h1>
+        <p class="lead">Your personalized student dashboard</p>
+    </div>
+    <div class="row g-4 justify-content-center">
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center">
+                    <span class="material-symbols-outlined" style="font-size:3rem;color:#3B82F6;">assignment</span>
+                    <h5 class="card-title mt-3">Assignments</h5>
+                    <p class="card-text">View and submit your assignments.</p>
+                    <a href="/student/assignments/" class="btn btn-primary btn-sm">Go to Assignments</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center">
+                    <span class="material-symbols-outlined" style="font-size:3rem;color:#10B981;">bar_chart</span>
+                    <h5 class="card-title mt-3">Marks & Grades</h5>
+                    <p class="card-text">Check your latest marks and grades.</p>
+                    <a href="/student/marks/" class="btn btn-success btn-sm">View Marks</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center">
+                    <span class="material-symbols-outlined" style="font-size:3rem;color:#8B5CF6;">schedule</span>
+                    <h5 class="card-title mt-3">Class Schedule</h5>
+                    <p class="card-text">See your upcoming classes and timetable.</p>
+                    <a href="/student/schedule/" class="btn btn-info btn-sm text-white">View Schedule</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center">
+                    <span class="material-symbols-outlined" style="font-size:3rem;color:#F59E42;">person</span>
+                    <h5 class="card-title mt-3">Profile</h5>
+                    <p class="card-text">Update your personal information.</p>
+                    <a href="/student/profile/" class="btn btn-warning btn-sm text-white">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5 justify-content-center">
+        <div class="col-md-8">
+            <div class="alert alert-info text-center shadow-sm">
+                <strong>Tip:</strong> Stay updated with your assignments and marks. If you have any questions, contact your teacher from the <a href="/student/contact/">Contact</a> page.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

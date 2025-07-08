@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student Assignment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(120deg, #232526 0%, #414345 100%);
+            min-height: 100vh;
+        }
+        .assignment-card {
+            max-width: 600px;
+            margin: 60px auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(0, 123, 255, 0.18);
+            padding: 2.5rem 2rem 2rem 2rem;
+            animation: fadeInDown 1s cubic-bezier(.39,.575,.565,1.000);
+            position: relative;
+        }
+        @keyframes fadeInDown {
+            0% { opacity: 0; transform: translateY(-40px);}
+            100% { opacity: 1; transform: translateY(0);}
+        }
+        .assignment-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #007bff;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            letter-spacing: 1px;
+            animation: fadeInUp 1s .2s backwards;
+        }
+        .assignment-illustration {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .assignment-illustration i {
+            font-size: 3rem;
+            color: #6f86d6;
+            background: #e9f0fa;
+            border-radius: 50%;
+            padding: 1rem;
+        }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(40px);}
+            100% { opacity: 1; transform: translateY(0);}
+        }
+        .btn-animated {
+            background: linear-gradient(90deg, #007bff 0%, #6f86d6 100%);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            padding: 0.6rem 2rem;
+            border-radius: 30px;
+            transition: box-shadow 0.2s, transform 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+        }
+        .btn-animated:hover {
+            box-shadow: 0 6px 24px rgba(0, 123, 255, 0.3);
+            transform: translateY(-2px) scale(1.03);
+            background: linear-gradient(90deg, #6f86d6 0%, #007bff 100%);
+        }
+        .form-label {
+            font-weight: 600;
+            color: #007bff;
+        }
+        .form-label .fa-info-circle {
+            color: #6f86d6;
+            margin-left: 4px;
+            cursor: pointer;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #6f86d6;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.15);
+        }
+        .fade-in-field {
+            animation: fadeInUp 0.7s;
+        }
+        hr {
+            border-top: 1px solid #6f86d6;
+        }
+        .badge-priority {
+            font-size: 0.9em;
+            margin-left: 8px;
+        }
+        .badge-low { background: #b2f7ef; color: #007bff; }
+        .badge-medium { background: #ffe066; color: #856404; }
+        .badge-high { background: #ff6f61; color: #fff; }
+        .tag-select {
+            min-height: 38px;
+        }
+        /* Custom scrollbar for a modern touch */
+        ::-webkit-scrollbar {
+            width: 8px;
+            background: #232526;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #007bff;
+            border-radius: 4px;
+        }
+        /* Animated feedback */
+        .fade-feedback {
+            animation: fadeInUp 0.7s;
+        }
+    </style>
+</head>
+<body>
+    {% include "teacher/navbar.html" %}
+    <div class="assignment-card shadow">
+        <div class="assignment-illustration">
+            <i class="fa-solid fa-book-open"></i>
+        </div>
+        
+        <div class="assignment-title">Add Student Assignment</div>
+        {% if success %}
+        <div class="alert alert-success fade-feedback" role="alert">
+            <i class="fa fa-check-circle me-2"></i> Assignment submitted successfully!
+        </div>
+        {% elif error %}
+        <div class="alert alert-danger fade-feedback" role="alert">
+            <i class="fa fa-times-circle me-2"></i> Oops! Something went wrong. Please try again later.
+        </div>
+        {% endif %}
+        <form id="assignmentForm" action="{% url "set_assignment" %}" method="post" enctype="multipart/form-data" autocomplete="off">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Assignment Title <i class="fa fa-info-circle" data-bs-toggle="tooltip" title="Enter a clear, descriptive title."></i></label>
+                <input type="text" name="title" class="form-control fade-in-field" required placeholder="Enter assignment title">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Assignment Type <i class="fa fa-info-circle" data-bs-toggle="tooltip" title="Select the type of assignment."></i></label>
+                <select name="type" class="form-select fade-in-field" required>
+                    <option value="">-- Select Type --</option>
+                    <option value="Homework">Homework</option>
+                    <option value="Project">Project</option>
+                    <option value="Quiz">Quiz</option>
+                    <option value="Presentation">Presentation</option>
+                </select>
+            </div>
+{% comment %} 
+            <div class="mb-3">
+                <label class="form-label">Priority <i class="fa fa-info-circle" data-bs-toggle="tooltip" title="Set the importance level."></i></label>
+                <select name="priority" class="form-select fade-in-field" required onchange="updatePriorityBadge(this)">
+                    <option value="">-- Select Priority --</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+                <span id="priorityBadge" class="badge badge-priority"></span>
+            </div>
+             {% endcomment %}
+            <div class="mb-3">
+                <label class="form-label">Estimated Time (hours) <i class="fa fa-info-circle" data-bs-toggle="tooltip" title="Estimated time to complete."></i></label>
+                <input type="number" name="estimated_time" class="form-control fade-in-field" min="1" max="100" placeholder="e.g. 2">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Description <i class="fa fa-info-circle" data-bs-toggle="tooltip" title="Provide detailed instructions."></i></label>
+                <textarea name="description" class="form-control fade-in-field" rows="3" required placeholder="Enter assignment description"></textarea>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Due Date <i class="fa fa-info-circle" data-bs-toggle="tooltip" title="Assignment deadline date."></i></label>
+                    <input type="date" name="due_date" class="form-control fade-in-field" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Due Time <i class="fa fa-info-circle" data-bs-toggle="tooltip" title="Assignment deadline time."></i></label>
+                    <input type="time" name="due_time" class="form-control fade-in-field" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Class <i class="fa fa-info-circle" data-bs-toggle="tooltip" title="Select the class for this assignment."></i></label>
+                <select name="student_class" class="form-select fade-in-field" required>
+                    <option value="">-- Select Class --</option>
+                    <option value="1 Class">1 Class</option>
+                    <option value="2 Class">2 Class</option>
+                    <option value="3 Class">3 Class</option>
+                    <option value="4 Class">4 Class</option>
+                    <option value="5 Class">5 Class</option>
+                    <option value="6 Class">6 Class</option>
+                    <option value="7 Class">7 Class</option>
+                    <option value="8 Class">8 Class</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Subject <i class="fa fa-info-circle" data-bs-toggle="tooltip" title="Select the subject."></i></label>
+                <select name="subject" class="form-select fade-in-field" required>
+                    <option value="">-- Select Subject --</option>
+                    <option value="English">English</option>
+                    <option value="Nepali">Nepali</option>
+                    <option value="Math">Math</option>
+                    <option value="Science">Science</option>
+                    <option value="Computer">Computer</option>
+                    <option value="Social">Social</option>
+                    <option value="Biyakran">Biyakran</option>
+                    <option value="Grammar">Grammar</option>
+                    <option value="Health">Health</option>
+                    <option value="Moral">Moral</option>
+                    <option value="GK">GK</option>
+                    <option value="OPT Math">OPT Math</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Assignment Image <i class="fa fa-info-circle" data-bs-toggle="tooltip" title="Upload an image for this assignment (optional)"></i></label>
+                <input type="file" name="assignment_image" class="form-control fade-in-field" accept="image/*" onchange="previewAssignmentImage(event)">
+                <div class="mt-2 text-center">
+                    <img id="assignmentImagePreview" src="#" alt="Image Preview" style="max-width: 180px; max-height: 120px; display: none; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,123,255,0.12);" />
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Upload Files <i class="fa fa-info-circle" data-bs-toggle="tooltip" title="You can upload multiple files."></i></label>
+                <input type="file" name="assignment_files" class="form-control fade-in-field" multiple>
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+                <button type="submit" class="btn btn-animated">Submit Assignment</button>
+            </div>
+        </form>
+    </div>
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmModalLabel">Confirm Submission</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to submit this assignment?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="confirmSubmit">Yes, Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% comment %}     
+    <script>
+        // Tooltip initialization
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        // Priority badge update
+        function updatePriorityBadge(select) {
+            var badge = document.getElementById('priorityBadge');
+            var value = select.value;
+            badge.className = 'badge badge-priority';
+            if (value === 'Low') badge.classList.add('badge-low');
+            else if (value === 'Medium') badge.classList.add('badge-medium');
+            else if (value === 'High') badge.classList.add('badge-high');
+            badge.textContent = value ? value : '';
+        }
+        // Assignment image preview
+        function previewAssignmentImage(event) {
+            var input = event.target;
+            var preview = document.getElementById('assignmentImagePreview');
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.src = '#';
+                preview.style.display = 'none';
+            }
+        }
+        // Confirmation modal submit
+        document.getElementById('confirmSubmit').onclick = function() {
+            document.getElementById('assignmentForm').submit();
+        };
+    </script> {% endcomment %}
+</body>
+</html> 
